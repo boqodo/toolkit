@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:annotation-config/>
+    <context:component-scan base-package="foo.bar"/>
+    <!--注册方法验证的后处理器
+        1.配置开启方法验证
+        2.在需要校验的类上添加@Validated
+        3.在需要校验的方法上加上相应的约束注解
+    -->
+    <bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor">
+    </bean>
+</beans>
