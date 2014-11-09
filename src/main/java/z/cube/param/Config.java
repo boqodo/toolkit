@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 
 
 @Documented
-@Target({ElementType.PARAMETER,ElementType.TYPE})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Config {
 
@@ -18,12 +18,4 @@ public @interface Config {
     /** 参数描述 */
     String description() default "";
 
-    /**
-     * 数据源类型
-     */
-    public enum SourceType {
-        DATABASE,               //数据库
-        XML,                    //XML文件
-        PROPERTIES              //属性文件
-    }
 }
