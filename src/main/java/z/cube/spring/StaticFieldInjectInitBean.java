@@ -55,11 +55,10 @@ public class StaticFieldInjectInitBean {
                 Object target = clazz.newInstance();
                 Field field = cf.getField();
                 Object val = convertType(field.getType(), entry.getValue());
-
+                field.setAccessible(true);
                 log.info("设置前##class:{},field:{};value:{}",
                         new Object[]{clazz.getCanonicalName(), field.getName(), field.get(target)});
 
-                field.setAccessible(true);
                 field.set(target, val);
 
                 log.info("设置后##class:{},field:{};value:{}",

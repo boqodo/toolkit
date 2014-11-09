@@ -1,8 +1,5 @@
 package z.cube.utils;
 
-/**
- * Created by KingSoft on 2014/11/9.
- */
 public class StaticTest {
 
     private static String s;

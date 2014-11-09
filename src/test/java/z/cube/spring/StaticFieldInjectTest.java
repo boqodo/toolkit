@@ -11,12 +11,9 @@
  */
 package z.cube.spring;
 
-/**
- * @author KingSoft
- */
 public class StaticFieldInjectTest {
     public static String MAX = "22";
     public static String MIN = "-22";
 
-    public static Integer CC = 10;
+    private static Integer CC = 10;
 }
