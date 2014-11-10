@@ -10,5 +10,5 @@ public class ConfigNull {
     public static final Date    DATE    = null;
     public static final Float   FLOAT   = null;
     public static final Double  DOUBLE  = null;
-    public static final Long LONG = null;
+    public static final Long    LONG    = null;
 }
