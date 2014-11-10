@@ -2,7 +2,6 @@ package z.cube.param;
 
 import javax.sql.DataSource;
 
-
 public class InitConfig {
     private String     propertiesFileNames;
     private String     tableName;
@@ -13,7 +12,8 @@ public class InitConfig {
     public InitConfig() {
     }
 
-    public InitConfig(String propertiesFileNames, String tableName, String keyColumn, String valueColumn, DataSource dataSource) {
+    public InitConfig(String propertiesFileNames, String tableName, String keyColumn, String valueColumn,
+                      DataSource dataSource) {
         this.propertiesFileNames = propertiesFileNames;
         this.tableName = tableName;
         this.keyColumn = keyColumn;
