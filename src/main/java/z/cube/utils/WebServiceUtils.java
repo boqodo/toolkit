@@ -14,8 +14,8 @@ import java.util.Map;
  * Webservice动态调用工具类(基于CXF)
  */
 public class WebServiceUtils {
-    private static final Integer                   CONNECTION_TIMEOUT = 6000;
-    private static final Integer                   RECEIVE_TIMEOUT    = 120000;
+    private static final Integer                   CONNECTION_TIMEOUT = 60*1000;
+    private static final Integer                   RECEIVE_TIMEOUT    = 120*1000;
     private static final JaxWsDynamicClientFactory CLIENTFACTORY      = JaxWsDynamicClientFactory.newInstance();
     private static final Map<String, Client>       CACHE              = Collections.synchronizedMap(new HashMap<String, Client>(8));
 
@@ -47,7 +47,7 @@ public class WebServiceUtils {
      * @return Object[]    方法返回值
      */
     public static Object[] dynamicInvoke(String wsdlUrl, String methodName, Object... paramters) throws Exception {
-        Client client = null;
+        Client client ;
         if (CACHE.containsKey(wsdlUrl)) {
             client = CACHE.get(wsdlUrl);
         } else {

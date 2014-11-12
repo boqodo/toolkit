@@ -48,6 +48,8 @@ public class SpringAppTests {
         configService.configDatabase(new String[]{"Datebase:before"});
         configService.configDatabase((String[]) ConfigNull.OBJECT);
         configService.configDatabase(ConfigNull.INTEGER);
+
+        configService.configXml(ConfigNull.INTEGER);
     }
 
     @Test

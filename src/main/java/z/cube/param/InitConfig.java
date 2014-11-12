@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 public class InitConfig {
     private String     propertiesFileNames;
+    private String     xmlFileNames;
     private String     tableName;
     private String     keyColumn;
     private String     valueColumn;
@@ -12,9 +13,9 @@ public class InitConfig {
     public InitConfig() {
     }
 
-    public InitConfig(String propertiesFileNames, String tableName, String keyColumn, String valueColumn,
-                      DataSource dataSource) {
+    public InitConfig(String propertiesFileNames, String xmlFileNames, String tableName, String keyColumn, String valueColumn, DataSource dataSource) {
         this.propertiesFileNames = propertiesFileNames;
+        this.xmlFileNames = xmlFileNames;
         this.tableName = tableName;
         this.keyColumn = keyColumn;
         this.valueColumn = valueColumn;
@@ -59,5 +60,13 @@ public class InitConfig {
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public String getXmlFileNames() {
+        return xmlFileNames;
+    }
+
+    public void setXmlFileNames(String xmlFileNames) {
+        this.xmlFileNames = xmlFileNames;
     }
 }

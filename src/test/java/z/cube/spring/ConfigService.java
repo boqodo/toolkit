@@ -8,14 +8,12 @@ import z.cube.param.SourceType;
 @Service
 public class ConfigService {
 
-    public void configProperties(@Config(key = "colors.background", source = SourceType.PROPERTIES)
-                                 String out) {
+    public void configProperties(
+            @Config(key = "colors.background", source = SourceType.PROPERTIES) String out) {
         System.out.println(out);
     }
 
-    public void configProperties(
-            @Config(key = "window.width", source = SourceType.PROPERTIES)
-            Integer width) {
+    public void configProperties(@Config(key = "window.width", source = SourceType.PROPERTIES) Integer width) {
         System.out.println("window.width:" + width);
     }
 
@@ -24,6 +22,10 @@ public class ConfigService {
     }
 
     public void configDatabase(@Config(key = "Second", source = SourceType.DATABASE) Integer f) {
+        System.out.println("database=" + f);
+    }
+
+    public void configXml(@Config(key = "msgnumber", source = SourceType.XML) Integer f) {
         System.out.println("database=" + f);
     }
 }

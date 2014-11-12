@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 
 
 public class MethodParameterInjectInterceptor implements MethodInterceptor {
-    private InitConfig initConfig;
+    private final InitConfig initConfig;
 
     public MethodParameterInjectInterceptor(InitConfig initConfig) {
         this.initConfig = initConfig;

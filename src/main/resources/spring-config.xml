@@ -79,6 +79,7 @@
 
     <bean id="initConifg" class="z.cube.param.InitConfig">
         <property name="propertiesFileNames" value="colors.properties,sizes.properties"/>
+        <property name="xmlFileNames" value="test.xml"/>
         <property name="tableName" value="CONFIGURATION"/>
         <property name="keyColumn" value="KEY"/>
         <property name="valueColumn" value="value"/>
@@ -93,5 +94,4 @@
                               ignore-failures="ALL">
         <jdbc:script location="classpath:initdb.sql" encoding="UTF-8"/>
     </jdbc:initialize-database>
-
 </beans>

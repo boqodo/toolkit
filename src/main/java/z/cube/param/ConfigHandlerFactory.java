@@ -11,6 +11,7 @@ public class ConfigHandlerFactory {
     static {
         HANDLER_MAP.put(SourceType.DATABASE, DatabaseConfigHandler.class);
         HANDLER_MAP.put(SourceType.PROPERTIES, PropertiesConfigHandler.class);
+        HANDLER_MAP.put(SourceType.XML,XmlConfigHandler.class);
     }
 
     public static void registerHandler(SourceType sourceType, Class<? extends ConfigHandler> clazz) {
