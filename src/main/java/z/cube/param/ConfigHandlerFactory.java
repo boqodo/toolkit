@@ -19,6 +19,9 @@ public class ConfigHandlerFactory {
             HANDLER_MAP.put(sourceType, clazz);
         }
     }
+    public static void overrideHandler(SourceType sourceType,Class<? extends ConfigHandler> clazz){
+        HANDLER_MAP.put(sourceType,clazz);
+    }
 
     @SuppressWarnings("unchecked")
     public static ConfigHandler getConfigHandler(SourceType sourceType, InitConfig initConfig) {
