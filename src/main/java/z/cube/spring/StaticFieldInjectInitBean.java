@@ -57,12 +57,12 @@ public class StaticFieldInjectInitBean {
                 Object val = convertType(field.getType(), entry.getValue());
                 field.setAccessible(true);
                 log.info("设置前##class:{},field:{};value:{}",
-                        new Object[]{clazz.getCanonicalName(), field.getName(), field.get(target)});
+                        clazz.getCanonicalName(), field.getName(), field.get(target));
 
                 field.set(target, val);
 
                 log.info("设置后##class:{},field:{};value:{}",
-                        new Object[]{clazz.getCanonicalName(), field.getName(), field.get(target)});
+                        clazz.getCanonicalName(), field.getName(), field.get(target));
             } catch (Exception e) {
                 log.warn("静态字段设值出现异常:{}", e.getMessage());
             }

@@ -6,5 +6,6 @@ package z.cube.param;
 public enum SourceType {
     DATABASE, //数据库
     XML, //XML文件
-    PROPERTIES //属性文件
+    PROPERTIES, //属性文件
+    FLEX
 }
