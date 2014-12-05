@@ -1,19 +1,56 @@
 package z.cube.utils;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Map;
+
+import javax.persistence.Table;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ClassUtils;
 
-import javax.persistence.Table;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-
 
 public class BeanUtilsEx {
     public static String getEntityTableName(Class<?> clazz) {
         return AnnotationUtils.findAnnotation(clazz, Table.class).name();
+    }
+    /**
+     * 使用Map中的值填充T属性
+     * @see org.apache.commons.beanutils.BeanUtils#populate(Object, Map)
+     * @param clazz
+     * @param properties
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+	public static <T> T populate(Class<T> clazz,Map properties){
+    	T t=null;
+    	try {
+    		t=clazz.newInstance();
+    		BeanUtilsBean.getInstance().populate(t, properties);
+		} catch (Exception e) {
+			
+		}
+    	return t;
+    }
+    /**
+     * 使用Map中的值填充T属性
+     * @see org.apache.commons.beanutils.BeanUtils#populate(Object, Map)
+     * @param t
+     * @param properties
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+	public static <T> T populate(T t,Map properties){
+    	try {
+    		  BeanUtilsBean.getInstance().populate(t, properties);
+		} catch (Exception e) {
+			
+		}
+    	return t;
     }
     /**
      * 复制source中非空的字段值到target

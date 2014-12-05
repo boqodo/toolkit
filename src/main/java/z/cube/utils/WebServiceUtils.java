@@ -74,6 +74,7 @@ public class WebServiceUtils {
         }
         //Invokes an operation synchronously 同步的，线程安全
        
+        //异常:No operation was found with the name
         QName opName = getQName(methodName, client);  
         Object[] result = client.invoke(opName, paramters);
         return result;
