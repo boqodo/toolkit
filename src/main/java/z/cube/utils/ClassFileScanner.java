@@ -12,6 +12,12 @@ import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * 扫描类文件并解析类中的信息
+ *
+ * 提取类中public static fianl修饰的字段，组装成Map
+ * 可通过转为JSON输出到前台使用
+ */
 public class ClassFileScanner {
     private static final int PSF_MODIFIERS = Modifier.PUBLIC + Modifier.STATIC + Modifier.FINAL;
     private static ClassFileScanner instance=null;
@@ -46,7 +52,6 @@ public class ClassFileScanner {
     /**
      * 加载rootPath下所有类中的以`PSF_MODIFIERS`修饰的字段
      * @param rootPath     类文件所在目录
-     * @return
      */
     public static Map<String,Object> loadConstants(File rootPath){
         Map<String, Object> kv = new HashMap<String, Object>();
@@ -167,11 +172,11 @@ public class ClassFileScanner {
     /**
      * 遍历目录寻找class文件
      * TODO: 提取成获取class文件的方法
-     * @param classpath
-     * @param kv
+     * @param classFile     类文件
+     * @param kv            存放解析信息的map
      */
-    private void listClassFile(File classpath, Map<String, Object> kv) {
-        File[] files = classpath.listFiles();
+    private void listClassFile(File classFile, Map<String, Object> kv) {
+        File[] files = classFile.listFiles();
         if (kv == null) {
             kv = new HashMap<String, Object>();
         }
