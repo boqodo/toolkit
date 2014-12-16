@@ -95,7 +95,14 @@ public class ClassFileScanner {
         try {
             // 获取枚举类型的所有实例
             String $VALUES = "$VALUES";
-            Field valuesField = clazz.getDeclaredField($VALUES);
+            Field valuesField=null;
+            try{
+            	valuesField=clazz.getDeclaredField($VALUES);
+            }catch(NoSuchFieldException e){
+                //eclipse java1.7编译生成的字节码不同
+                $VALUES="ENUM"+$VALUES;
+            	valuesField=clazz.getDeclaredField($VALUES);
+            }
             valuesField.setAccessible(true);
             Enum[] enums = (Enum[]) valuesField.get(null);
 
