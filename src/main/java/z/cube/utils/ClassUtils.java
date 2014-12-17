@@ -34,17 +34,38 @@ public class ClassUtils {
             throw convertException(e);
         }
     }
-    public static List<Class> listClasses(File classFile) {
+
+    /**
+     * 遍历加载指定目录下的class
+     * @param classFile 类文件目录
+     */
+    @SuppressWarnings("rawtypes")
+	public static List<Class> listClasses(File classFile) {
         List<Class> store=new  ArrayList<Class>(64);
         listClasses(classFile,store, TruePredicate.getInstance());
         return store;
     }
-    public static List<Class> listClasses(File classFile,Predicate filter){
+
+    /**
+     * 遍历加载指定目录下的class，并根据条件进行过滤
+     * @param classFile    类文件目录
+     * @param filter       过滤条件
+     */
+    @SuppressWarnings("rawtypes")
+	public static List<Class> listClasses(File classFile,Predicate filter){
         List<Class> store=new  ArrayList<Class>(64);
         listClasses(classFile,store, filter);
         return store;
     }
-    private static void listClasses(File classFile,List<Class> store,Predicate filter) {
+
+    /**
+     *  遍历加载指定目录下的class，并根据条件进行过滤
+     * @param classFile     类文件目录
+     * @param store         存放加载类列表
+     * @param filter        过滤条件
+     */
+    @SuppressWarnings("rawtypes")
+	private static void listClasses(File classFile,List<Class> store,Predicate filter) {
         File[] files = classFile.listFiles();
         if(store==null){
             store=new ArrayList<Class>(64);
@@ -69,6 +90,34 @@ public class ClassUtils {
             }
         }
     }
+
+    /**
+     * 遍历加载指定目录下的class，并进行processor处理
+     * @param classFile     类文件目录
+     * @param processor     处理器
+     */
+    public static void listClasses(File classFile,Processor processor){
+        File[] files = classFile.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                listClasses(file, processor);
+            } else {
+                if (FilenameUtils.isExtension(file.getName(), "class")) {
+                    String clazzName = StringUtils.replace(file.getAbsolutePath(), getClasspathName(), "")
+                            .replace(File.separatorChar, '.');
+                    clazzName = FilenameUtils.removeExtension(clazzName);
+                    try {
+                        Class clazz = Class.forName(clazzName);
+                        Object out= processor.process(clazz);
+                        processor.save(out);
+                    } catch (ClassNotFoundException e) {
+                        throw convertException(e);
+                    }
+                }
+            }
+        }
+    }
+
     private static String getClasspathName() {
         URL classpath=ClassFileScanner.class.getClassLoader().getResource(".");
         return new File(classpath.getFile()).getAbsolutePath()+File.separator;
