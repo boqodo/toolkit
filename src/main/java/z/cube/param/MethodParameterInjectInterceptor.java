@@ -3,7 +3,10 @@ package z.cube.param;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.annotation.Annotation;
@@ -24,15 +27,25 @@ public class MethodParameterInjectInterceptor implements MethodInterceptor {
         Method invokedMethod = invocation.getMethod();
         Annotation[][] paramAnns = invokedMethod.getParameterAnnotations();
 
+        //传入参数的对象数组
         Object[] parameters = invocation.getArguments();
+
+
+        ParameterNameDiscoverer pnd=new DefaultParameterNameDiscoverer();
+        //传入参数的名称数组
+        String[] parameterNames=pnd.getParameterNames(invokedMethod);
+
+        //传入参数的对象类型
         Type[] paramTypes = invokedMethod.getGenericParameterTypes();
+
         //逐个基本类型参数处理
         for (int i = 0; i < paramAnns.length; i++) {
             Config config = findConfig(paramAnns[i]);
             Type paramType = paramTypes[i];
             //参数值不为空，则不注入
             if (config != null && parameters[i] == null) {
-                parameters[i] = findInjectValue(config, paramType);
+                String key= StringUtils.isNotBlank(config.key())?config.key():parameterNames[i];
+                parameters[i] = findInjectValue(config.source(),key,paramType);
                 break;
             }
 
@@ -41,20 +54,19 @@ public class MethodParameterInjectInterceptor implements MethodInterceptor {
             Config typeConfig=(Config) paramClazz.getAnnotation(Config.class);
             boolean isPresent=typeConfig!=null; 
             if (isPresent && parameters[i] == null) {
-                parameters[i] = injectObject(paramClazz, typeConfig);
+                parameters[i] = injectObject(paramClazz, typeConfig.source());
             }
         }
 
         return invocation.proceed();
     }
 
-    private Object findInjectValue(Config config, Type type) {
+    private Object findInjectValue(SourceType sourceType,String key, Type type) {
         Class<?> clazz = (Class<?>) type;
-        SourceType sourceType = config.source();
         ConfigHandler handler = ConfigHandlerFactory.getConfigHandler(sourceType, initConfig);
 
         if (BeanUtils.isSimpleProperty(clazz)) {
-            Object val = handler.getValue(config.key());
+            Object val = handler.getValue(key);
             val = ConvertUtils.convert(val, clazz);
             return val;
         } else {
@@ -63,8 +75,7 @@ public class MethodParameterInjectInterceptor implements MethodInterceptor {
         }
     }
 
-    private Object injectObject(Class<?> clazz, Config config) {
-        SourceType sourceType = config.source();
+    private Object injectObject(Class<?> clazz, SourceType sourceType) {
         ConfigHandler handler = ConfigHandlerFactory.getConfigHandler(sourceType, initConfig);
         return injectObject(clazz, handler);
     }
