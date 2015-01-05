@@ -1,18 +1,16 @@
 package z.cube.param;
 
 
+import flex.messaging.FlexContext;
+import flex.messaging.FlexSession;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import flex.messaging.FlexContext;
-import flex.messaging.FlexSession;
-
 public class FlexSessionConfigHandler implements ConfigHandler {
-    private transient final Logger log;
     private static final String REF_CHAR = ".";
-    private FlexSession session;
+    private transient final Logger log;
 
     public FlexSessionConfigHandler() {
         this.log = LoggerFactory.getLogger(getClass());
@@ -20,11 +18,12 @@ public class FlexSessionConfigHandler implements ConfigHandler {
 
     @Override
     public void init(InitConfig initConfig) {
-        session = FlexContext.getFlexSession();
+
     }
 
     @Override
     public Object getValue(String key) {
+        FlexSession session = FlexContext.getFlexSession();
         if (StringUtils.contains(key, REF_CHAR)) {
             int firstIndex = StringUtils.indexOf(key, REF_CHAR);
             String prefix = StringUtils.substring(key, 0, firstIndex);

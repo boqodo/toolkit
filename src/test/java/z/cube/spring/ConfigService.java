@@ -28,4 +28,8 @@ public class ConfigService {
     public void configXml(@Config(key = "msgnumber", source = SourceType.XML) Integer f) {
         System.out.println("database=" + f);
     }
+    
+    public void configComplex(Complex complex){
+    	System.out.println(complex);
+    }
 }

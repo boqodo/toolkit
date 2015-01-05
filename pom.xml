@@ -423,6 +423,44 @@
      		<artifactId>servlet-api</artifactId>
      		<version>2.4</version>
      	</dependency>
+     	
+     	<!-- pojo 自动填充数据 -->
+     	<dependency>
+	   		 <groupId>uk.co.jemos.podam</groupId>
+		    <artifactId>podam</artifactId>
+		    <version>4.2.2.RELEASE</version>
+		</dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.10.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.moxy</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javawriter</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+
+
+        <!-- 时间格式化 -->
+        <dependency>
+            <groupId>org.ocpsoft.prettytime</groupId>
+            <artifactId>prettytime</artifactId>
+            <version>3.2.7.Final</version>
+        </dependency>
+        
+        <dependency>
+		  <groupId>org.joda</groupId>
+		  <artifactId>joda-convert</artifactId>
+		  <version>1.7</version>
+		</dependency>
+
     </dependencies>
     <!-- 
 	<repositories>
@@ -439,7 +477,15 @@
             <id>spring-libs-release</id>
             <url>http://repo.spring.io/libs-release</url>
         </repository>
+
+        <!-- To use snapshots, you must also use the Sonatype Snapshots respository -->
+        <repository>
+            <id>sonatype-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
+
+
 
     <pluginRepositories>
         <pluginRepository>
@@ -453,8 +499,8 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
             <!--编译 校验 hibernate validator注解使用是否正确 -->

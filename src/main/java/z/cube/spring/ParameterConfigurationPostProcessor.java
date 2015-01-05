@@ -21,7 +21,9 @@ public class ParameterConfigurationPostProcessor extends AbstractAdvisingBeanPos
         //Pointcut pointcut = Pointcut.TRUE;  //针对final无法拦截处理
         //Pointcut pointcut = new AnnotationMatchingPointcut(Service.class, true);
     	AspectJExpressionPointcut pointcut=new AspectJExpressionPointcut();
-    	pointcut.setExpression("execution(* *(..,@z.cube.param.Config (*),..))");
+    	String expression = "execution(* *(..,@z.cube.param.Config (*),..))" +
+    			"||execution(* *(..,(@ z.cube.param.Config *),..))";
+		pointcut.setExpression(expression);
         //TODO:方法嵌套拦截，方法A调用方法B，让B方法也起作用
         Advice advice = new MethodParameterInjectInterceptor(initConfig);
         this.advisor = new DefaultPointcutAdvisor(pointcut, advice);
