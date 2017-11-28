@@ -1,4 +1,4 @@
-package z.cube.utils;
+package java.z.cube.utils;
 
 public class StaticTest {
 

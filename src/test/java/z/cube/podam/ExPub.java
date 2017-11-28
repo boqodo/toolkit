@@ -9,7 +9,9 @@
  * 杭州掌拓科技有限公司拥有该文件的使用、复制、修改和分发的许可权
  * ================================================================== 
  */
-package z.cube.podam;
+package java.z.cube.podam;
+
+import java.io.Serializable;
 
 import javax.xml.bind.annotation.*;
 
@@ -17,7 +19,7 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "pub", propOrder = { "code", 
 		"msgnumber", "czjname", "sender", "receiver", "msgstatus" })
-public class ExPub {
+public class ExPub implements Serializable {
 	@XmlElement(name = "code")
 	private String code;
 	@XmlElement(name = "msgnumber")

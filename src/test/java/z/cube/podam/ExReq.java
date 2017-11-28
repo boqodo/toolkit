@@ -9,7 +9,12 @@
  * 杭州掌拓科技有限公司拥有该文件的使用、复制、修改和分发的许可权
  * ================================================================== 
  */
-package z.cube.podam;
+package java.z.cube.podam;
+
+import z.cube.podam.ExDetail;
+import z.cube.podam.ExMain;
+
+import java.io.Serializable;
 
 import javax.xml.bind.annotation.*;
 
@@ -17,7 +22,7 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "req", propOrder = { "ansback", 
 		"main", "detail"})
-public class ExReq {
+public class ExReq implements Serializable{
 	@XmlAttribute(name = "ansback")
 	private String ansback="no";
 	@XmlElement(name = "main")

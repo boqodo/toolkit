@@ -20,6 +20,8 @@ import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 /**
  * Webservice动态调用工具类(基于CXF)
+ * 
+ * 针对低版本的如 cxf2.1.3，需要修改源码 DynamicClientFactory 中的compileJavaSrc方法，指定target
  */
 public class WebServiceUtils {
     private static final String 					WSDL_SUFFIX 	  = "?wsdl";

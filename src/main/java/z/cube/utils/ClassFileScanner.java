@@ -95,7 +95,7 @@ public class ClassFileScanner {
         try {
             // 获取枚举类型的所有实例
             String $VALUES = "$VALUES";
-            Field valuesField=null;
+            Field valuesField;
             try{
             	valuesField=clazz.getDeclaredField($VALUES);
             }catch(NoSuchFieldException e){
@@ -104,7 +104,8 @@ public class ClassFileScanner {
             	valuesField=clazz.getDeclaredField($VALUES);
             }
             valuesField.setAccessible(true);
-            Enum[] enums = (Enum[]) valuesField.get(null);
+            //Enum[] enums = (Enum[]) valuesField.get(null);
+            Enum[] enums = (Enum[]) clazz.getEnumConstants();
 
             // 获取所有枚举实例名称(实例通过字段存放)
             List<String> enumNames = new ArrayList<String>(enums.length);

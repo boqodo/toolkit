@@ -9,23 +9,28 @@
  * 杭州掌拓科技有限公司拥有该文件的使用、复制、修改和分发的许可权
  * ================================================================== 
  */
-package z.cube.podam;
+package java.z.cube.podam;
+
+import z.cube.podam.ExPub;
+import z.cube.podam.ExReq;
+
+import java.io.Serializable;
 
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "package")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "package", propOrder = { "version","pub", "req" })
-public class ExPackage {
+public class ExPackage implements Serializable {
 	@XmlAttribute(name = "version")
 	private String version="1.0";
 
 	@XmlElement(name = "pub")
-	private ExPub pub;
+	private z.cube.podam.ExPub pub;
 	@XmlElement(name = "req")
-	private ExReq req;
+	private z.cube.podam.ExReq req;
 
-	public ExPub getPub() {
+	public z.cube.podam.ExPub getPub() {
 		return pub;
 	}
 
@@ -33,7 +38,7 @@ public class ExPackage {
 		this.pub = pub;
 	}
 
-	public ExReq getReq() {
+	public z.cube.podam.ExReq getReq() {
 		return req;
 	}
 

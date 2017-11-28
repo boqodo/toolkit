@@ -1,7 +1,10 @@
-package z.cube.cxf;
+package java.z.cube.cxf;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class User {
     public int getId() {  
         return id;  

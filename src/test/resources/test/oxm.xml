@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<xml-bindings 
+    xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
+    package-name="z.cube.temp" 
+    xml-mapping-metadata-complete="true">
+    <java-types>
+        <java-type name="SearchResult">
+            <xml-root-element/>
+            <java-attributes>
+                <xml-element java-attribute="listOfMap"/>
+                <xml-element java-attribute="mapWithList"/>
+            </java-attributes>
+        </java-type>
+    </java-types>
+</xml-bindings>

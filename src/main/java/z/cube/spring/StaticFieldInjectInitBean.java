@@ -1,5 +1,6 @@
 package z.cube.spring;
 
+import org.apache.commons.beanutils.ConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,8 @@ import java.util.Map;
  */
 public class StaticFieldInjectInitBean {
     private static final String ERRORSTR = "不正确的静态字段设置!";
-    private transient final Logger              log;
-    private                 Map<String, Object> staticFieldInjectValueMap;
+    private transient final Logger log;
+    private Map<String, Object> staticFieldInjectValueMap;
 
     public StaticFieldInjectInitBean() {
         log = LoggerFactory.getLogger(this.getClass());
@@ -50,10 +51,9 @@ public class StaticFieldInjectInitBean {
     private void inject(Map<String, Object> map) {
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             try {
-                ClassField cf = parse(entry.getKey());
-                Class<?> clazz = cf.getClazz();
+            	Field field = parse(entry.getKey());
+                Class<?> clazz = field.getDeclaringClass();
                 Object target = clazz.newInstance();
-                Field field = cf.getField();
                 Object val = convertType(field.getType(), entry.getValue());
                 field.setAccessible(true);
                 log.info("设置前##class:{},field:{};value:{}",
@@ -70,18 +70,17 @@ public class StaticFieldInjectInitBean {
     }
 
     private Object convertType(Class<?> target, Object value) {
-        //TODO:convert
         Object temp = null;
         if (target.equals(value.getClass())) {
             temp = value;
         } else {
-            //doConvert
+            temp = ConvertUtils.convert(value, target);
         }
         return temp;
     }
 
 
-    private ClassField parse(String clazzFieldStr) {
+    private Field parse(String clazzFieldStr) {
 
         int i = clazzFieldStr.lastIndexOf(".");
         validate(i == -1);
@@ -93,8 +92,7 @@ public class StaticFieldInjectInitBean {
         try {
             Class<?> clazz = Class.forName(clazzName);
             Field field = clazz.getDeclaredField(fieldName);
-            ClassField cf = new ClassField(clazz, field);
-            return cf;
+            return field;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -129,23 +127,5 @@ public class StaticFieldInjectInitBean {
 
     public void setStaticFieldInjectValueMap(Map<String, Object> staticFieldInjectValueMap) {
         this.staticFieldInjectValueMap = staticFieldInjectValueMap;
-    }
-
-    private class ClassField {
-        private Class<?> clazz;
-        private Field    field;
-
-        public ClassField(Class<?> clazz, Field field) {
-            this.clazz = clazz;
-            this.field = field;
-        }
-
-        public Class<?> getClazz() {
-            return clazz;
-        }
-
-        public Field getField() {
-            return field;
-        }
     }
 }

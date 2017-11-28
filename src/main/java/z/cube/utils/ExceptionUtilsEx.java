@@ -15,11 +15,12 @@ public class ExceptionUtilsEx {
     /**
      * 获取异常信息,不显示异常类名，用于前台页面异常信息显示
      *
-     * @param th
+     * @param e
      *
      * @return
      */
-    public static String getMessageEx(Throwable e) {
+    @SuppressWarnings("deprecation")
+	public static String getMessageEx(Throwable e) {
         String error;
         if (e instanceof ConnectException) {
             error = "连接超时或IP地址配置错!";

@@ -1,4 +1,4 @@
-package z.cube.utils;
+package java.z.cube.utils;
 
 import com.fasterxml.classmate.*;
 import com.fasterxml.classmate.members.RawMethod;

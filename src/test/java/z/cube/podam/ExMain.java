@@ -9,14 +9,16 @@
  * 杭州掌拓科技有限公司拥有该文件的使用、复制、修改和分发的许可权
  * ================================================================== 
  */
-package z.cube.podam;
+package java.z.cube.podam;
 
 import javax.xml.bind.annotation.*;
+
+import java.io.Serializable;
 import java.util.List;
 
 @XmlRootElement(name = "main")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ExMain {
+public class ExMain implements Serializable{
 	@XmlAttribute(name = "fieldsname")
 	private String fieldsname;
 	@XmlElement(name="value")

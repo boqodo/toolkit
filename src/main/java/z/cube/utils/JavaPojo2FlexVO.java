@@ -67,7 +67,7 @@ public class JavaPojo2FlexVO {
      *         flex中vo对象的包名,如果为空则为javabean所在包包名
      *
      * @throws ClassNotFoundException
-     * @throws java.io.IOException
+     * @throws IOException
      */
     public static void generateAsFile(String pojoName, String packageName,
                                       String folder, boolean bindable) throws ClassNotFoundException,
