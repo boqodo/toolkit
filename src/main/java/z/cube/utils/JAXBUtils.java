@@ -1,6 +1,7 @@
 package z.cube.utils;
 
 import javax.xml.bind.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -73,16 +74,13 @@ public class JAXBUtils {
 		return generateXml(object, false);
 	}
 
-	/**
-	 * 去除生成的 xml头中 包含的standalone 属性
-	 */
-	public static String generateXmlEx(Object object) {
+	public static String generateXmlEx(Object object,boolean format){
 		try {
 			JAXBContext jaxb = JAXBContext.newInstance(object.getClass());
 			Marshaller marshaller = jaxb.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, DEFAULT_ENCODING);
 			//不格式化输出的xml
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, format);
 			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			marshaller.marshal(object, baos);
@@ -98,5 +96,10 @@ public class JAXBUtils {
 			throw convertException(e);
 		}
 	}
-
+	/**
+	 * 去除生成的 xml头中 包含的standalone 属性
+	 */
+	public static String generateXmlEx(Object object) {
+		return generateXmlEx(object,false);
+	}
 }
