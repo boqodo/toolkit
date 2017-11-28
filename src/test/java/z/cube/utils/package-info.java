@@ -1,0 +1,1 @@
+@PackageAnnotationTest package java.z.cube.utils;

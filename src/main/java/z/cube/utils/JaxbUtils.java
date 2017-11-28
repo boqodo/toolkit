@@ -1,87 +1,105 @@
 package z.cube.utils;
 
+import javax.xml.bind.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
-import javax.xml.bind.JAXB;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamWriter;
+public class JAXBUtils {
 
+	/** 默认字符集为UTF-8* */
+	private static final String DEFAULT_ENCODING = "UTF-8";
 
-public class JaxbUtils {
-	
-	/**默认字符集为gb18030**/
-	private static final String DEFAULT_ENCODING="gb18030";
 	/**
 	 * 解析报文
+	 *
 	 * @param xmlString xml报文字符串
+	 *
 	 * @return 报文对象Package;解析出错,返回null
 	 */
-	public static <T> T parseXml(Class<T> clazz, String xmlString){
+	public static <T> T parseXml(Class<T> clazz, String xmlString) {
 		try {
-			InputStream in=new ByteArrayInputStream(xmlString.getBytes(DEFAULT_ENCODING));
-			return JAXB.unmarshal(in,clazz);
-		} catch (Exception e) {
-			return null;
+			InputStream in = new ByteArrayInputStream(xmlString.getBytes(DEFAULT_ENCODING));
+			return JAXB.unmarshal(in, clazz);
+		} catch (UnsupportedEncodingException e) {
+			throw convertException(e);
 		}
-		
 	}
-	/**
-	 * 生成报文
-	 * @return 转xml后的字符串;转换出错,返回null
-	 */
-	public static String generateXml(Object object){
-		try{
-			JAXBContext jaxb=JAXBContext.newInstance(object.getClass());
-			Marshaller marshaller=jaxb.createMarshaller();
+    public static <T> T parseXml(Class<T> clazz, InputStream in) {
+        return JAXB.unmarshal(in, clazz);
+    }
+
+	public static String generateFormatXml(Object object) {
+		return generateXml(object, true);
+	}
+
+	public static String generateXml(Object object, boolean format) {
+		try {
+			JAXBContext jaxb = JAXBContext.newInstance(object.getClass());
+			Marshaller marshaller = jaxb.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, DEFAULT_ENCODING);
 			//不格式化输出的xml
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, format);
 
-            ByteArrayOutputStream baos=new ByteArrayOutputStream();
-			marshaller.marshal(object,baos);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			marshaller.marshal(object, baos);
 			return baos.toString(DEFAULT_ENCODING);
-		}catch(Exception e){
-			return null;
+		} catch (JAXBException e) {
+			throw convertException(e);
+		} catch (UnsupportedEncodingException e) {
+			throw convertException(e);
 		}
 	}
 
+	private static RuntimeException convertException(Exception e) {
+		String message = e.getMessage();
+		if (e instanceof UnsupportedEncodingException) {
+			message = String.format("不支持(%s)编码格式!", DEFAULT_ENCODING);
+		} else if (e instanceof JAXBException) {
+			message = "JAXB异常!";
+		}else if(e instanceof PropertyException){
+			message = "不支持的Marshaller属性!";
+		}
+		return new RuntimeException(message, e);
+	}
 
-    /**
-     * 去除生成的 xml头中 包含的standalone 属性
-     * @return
-     */
-    public static String generateXmlEx(Object object){
-        try{
-            JAXBContext jaxbContext=JAXBContext.newInstance(object.getClass());
-//            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-//            jaxbMarshaller.setProperty(Marshaller.JAXB_ENCODING, DEFAULT_ENCODING);
-//            jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            XMLOutputFactory xmlOutputFactory= XMLOutputFactory.newInstance();
-//            XMLStreamWriter xmlStreamWriter = xmlOutputFactory.createXMLStreamWriter(baos, DEFAULT_ENCODING);
-//            xmlStreamWriter.writeStartDocument(DEFAULT_ENCODING, "1.0");
-//            jaxbMarshaller.marshal(object, xmlStreamWriter);
-//            xmlStreamWriter.writeEndDocument();
-//            xmlStreamWriter.close();
-//            return baos.toString(DEFAULT_ENCODING);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty("jaxb.encoding", DEFAULT_ENCODING);
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
+	/**
+	 * 生成报文
+	 *
+	 * @return 转xml后的字符串;转换出错,返回null
+	 */
+	public static String generateXml(Object object) {
+		return generateXml(object, false);
+	}
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            XMLStreamWriter xmlStreamWriter = xmlOutputFactory.createXMLStreamWriter(baos, (String) jaxbMarshaller.getProperty(Marshaller.JAXB_ENCODING));
-            xmlStreamWriter.writeStartDocument((String) jaxbMarshaller.getProperty(Marshaller.JAXB_ENCODING), "1.0");
-            jaxbMarshaller.marshal(object, xmlStreamWriter);
-            xmlStreamWriter.writeEndDocument();
-            xmlStreamWriter.close();
-            return new String(baos.toByteArray(),DEFAULT_ENCODING);
-        }catch(Exception e){
-            return null;
-        }
-    }
-	
+	public static String generateXmlEx(Object object,boolean format){
+		try {
+			JAXBContext jaxb = JAXBContext.newInstance(object.getClass());
+			Marshaller marshaller = jaxb.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, DEFAULT_ENCODING);
+			//不格式化输出的xml
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, format);
+			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			marshaller.marshal(object, baos);
+			String result = baos.toString(DEFAULT_ENCODING);
+			String xmlHeader = "<?xml version=\"1.0\" encoding=\"%s\"?>";
+
+			return String.format(xmlHeader, DEFAULT_ENCODING) + result;
+		} catch (PropertyException e) {
+			throw convertException(e);
+		} catch (UnsupportedEncodingException e) {
+			throw convertException(e);
+		} catch (JAXBException e) {
+			throw convertException(e);
+		}
+	}
+	/**
+	 * 去除生成的 xml头中 包含的standalone 属性
+	 */
+	public static String generateXmlEx(Object object) {
+		return generateXmlEx(object,false);
+	}
 }

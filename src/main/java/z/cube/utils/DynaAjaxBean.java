@@ -179,40 +179,24 @@ public class DynaAjaxBean {
     public static void main(String[] args) throws Exception {
         class Address{
             private String local;
-            private int id;
-            private Address address;
-            private Point p;
-        }
-        class Card{
-            private String name;
-            private Card card;
             public Address(String local){
                 this.local=local;
-            }
-
-            public Card(int id,Address address){
-                this.id=id;
-                this.address=address;
-            }
-
-            public Person(){}
-
-            public Person(Point p,String name,Card card){
-                this.p=p;
-                this.name=name;
-                this.card=card;
-
             }
 
             public String getLocal() {
                 return local;
             }
-        }
-
-        class Person{
 
             public void setLocal(String local) {
                 this.local = local;
+            }
+        }
+        class Card{
+            private int id;
+            private Address address;
+            public Card(int id,Address address){
+                this.id=id;
+                this.address=address;
             }
 
             public int getId() {
@@ -230,6 +214,20 @@ public class DynaAjaxBean {
             public void setAddress(Address address) {
                 this.address = address;
             }
+        }
+
+        class Person{
+            public Person(){}
+            public Person(Point p,String name,Card card){
+                this.p=p;
+                this.name=name;
+                this.card=card;
+
+            }
+            private Point p;
+
+            private String name;
+            private Card card;
 
             public Card getCard() {
                 return card;
